@@ -11,9 +11,29 @@ type Character = {
     charisma: number;
 }
 
-const generateCharacter = (name: unknown): Character => {
-    // TODO: define function
-    return { name, health: 10, strength: 0, dexterity: 0, constitution: 0, intelligence: 0, wisdom: 0, charisma: 0 }; 
+const generateCharacter = (name: string): Character => {
+    const strength = throwDices();
+    const dexterity = throwDices();
+    const constitution = throwDices();
+    const intelligence = throwDices();
+    const wisdom = throwDices();
+    const charisma = throwDices();
+    return { name, health: 10 - Math.floor((constitution - 10)/2), strength: strength, dexterity: dexterity, constitution: constitution, intelligence: intelligence, wisdom: wisdom, charisma: charisma }; 
+}
+
+const throwDices = (): number => {
+    let dices: number[] = new Array(4)
+    let sum = 0;
+    let min = 0;
+    for(let i=0; i<4; i++){
+        dices[i] = (Math.floor(Math.random() * 6) + 1);
+        sum += dices[i];
+        if(i==0 || min > dices[i]){
+            min = dices[i];
+        }
+    }
+    sum -= min;
+    return sum;
 }
 
 describe('[Backend] Level 1', () => {
